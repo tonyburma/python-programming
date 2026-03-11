@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css"
+    />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Why File Handling?</h2>
+          <p>
+            Data in memory (variables) is <b>volatile</b>—it disappears when the
+            program ends.
+          </p>
+          <ul>
+            <li>Persistence: Saving data permanently to the disk.</li>
+            <li>Scalability: Processing data larger than our RAM.</li>
+            <li>
+              Interoperability: Sharing data between different programs and
+              systems.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Data Analytics: Common File Types</h3>
+
+          <ul>
+            <li>
+              <b>CSV (Comma Separated Values):</b> The bread and butter of data
+              tables.
+            </li>
+            <li>
+              <b>JSON (JavaScript Object Notation):</b> Standard for web APIs
+              and structured configurations.
+            </li>
+            <li>
+              <b>TXT (Plain Text):</b> Used for logs, raw unstructured data, and
+              documentation.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Understanding File Modes</h3>
+          <p>Modes define how we interact with the file resource.</p>
+          <table>
+            <tr>
+              <th>Mode</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>'r'</td>
+              <td>Read (default)</td>
+            </tr>
+            <tr>
+              <td>'w'</td>
+              <td>Write (Overwrites existing)</td>
+            </tr>
+            <tr>
+              <td>'a'</td>
+              <td>Append (Adds to end)</td>
+            </tr>
+            <tr>
+              <td>'r+'</td>
+              <td>Read & Write</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>The 'os' Module: Bridging Python & The System</h3>
+          <p>
+            The <code>os</code> library provides a portable way of using
+            operating system-dependent functionality.
+          </p>
+          <ul>
+            <li><b>Navigation:</b> Moving around your computer's folders.</li>
+            <li>
+              <b>File System Manipulation:</b> Creating, deleting, and renaming
+              files/folders.
+            </li>
+            <li>
+              <b>Path Management:</b> Dealing with file locations securely.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>1. Navigation & Environment</h3>
+          <p>Where are we? Where are we going?</p>
+          <pre><code>import os
+# Example 1: Get current folder
+print(os.getcwd())
+
+# Example 2: List contents of a folder
+print(os.listdir('.'))
+
+# Example 3: Change directory
+os.chdir('/Users/data_project')</code></pre>
+        </section>
+
+        <section>
+          <h3>2. File System Manipulation</h3>
+          <p>Creating and cleaning up your workspace.</p>
+          <pre><code># Example 1: Create a new directory
+os.makedirs('reports/2026')
+
+# Example 2: Rename a file
+os.rename('data.txt', 'final_data.txt')
+
+# Example 3: Remove a file
+os.remove('temp_file.log')</code></pre>
+        </section>
+
+        <section>
+          <h3>3. Path Management (The Pro Way)</h3>
+          <p>
+            Hardcoding paths like <code>"C:\Users\..."</code> causes bugs on
+            Mac/Linux. Use <code>os.path</code> instead.
+          </p>
+
+          <pre><code># Example 1: Join paths safely
+path = os.path.join('data', 'raw', 'input.csv')
+
+# Example 2: Check if file exists
+if os.path.exists(path):
+    print("Ready to process!")
+
+# Example 3: Get absolute path
+print(os.path.abspath('data.csv'))</code></pre>
+        </section>
+
+        <section>
+          <h3>Checking & Opening Files</h3>
+          <p>
+            Before reading, it's best practice to verify existence to prevent
+            crashes.
+          </p>
+          <pre><code>import os
+# Example 1: Check existence
+if os.path.exists("data.csv"): 
+    print("File found")
+
+# Example 2: The 'with' context manager
+with open("data.csv", "r") as f:
+    pass # File is automatically closed
+
+# Example 3: Absolute path opening
+with open("/home/user/data.csv", "r") as f:
+    pass</code></pre>
+        </section>
+
+        <section>
+          <h3>Reading Files</h3>
+          <pre><code># Example 1: Read all at once
+data = f.read()
+
+# Example 2: Read line by line
+line = f.readline()
+
+# Example 3: Read all lines into a list
+lines = f.readlines()</code></pre>
+        </section>
+
+        <section>
+          <h3>Writing Files</h3>
+          <pre><code># Example 1: Write a single string
+f.write("Hello World")
+
+# Example 2: Write a list of lines
+f.writelines(["Line 1\n", "Line 2\n"])
+
+# Example 3: Append data without wiping
+with open("log.txt", "a") as f:
+    f.write("New Log Entry")</code></pre>
+        </section>
+
+        <section>
+          <h3>File Exception Handling</h3>
+
+          <p>Files are external dependencies—they are prone to failure.</p>
+          <pre><code># Example 1: Missing file
+try:
+    f = open("missing.txt", "r")
+except FileNotFoundError:
+    print("The file does not exist.")
+
+# Example 2: Permission error
+except PermissionError:
+    print("No access to this file.")
+
+# Example 3: Generic Cleanup
+finally:
+    print("Attempted file operation.")</code></pre>
+        </section>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script>
+      Reveal.initialize({ hash: true });
+    </script>
+  </body>
+</html>

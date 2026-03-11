@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>LU01: Functions and Modules</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css"
+    />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown>
+          <textarea data-template>
+                    ## Python Programming (CS2001)
+                    ### LU01: Functions and Modules 
+                </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                    ### Defining and Calling Functions
+                    * Functions allow for modular code structure.
+                    * Defining a function: use the `def` keyword.
+                    * Calling a function: reference the name followed by parentheses.
+                    ```python
+                    def my_func():
+                        print("Hello World")
+                    my_func()
+                    ```
+                </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                    ### Arguments and Return Values
+                    * **Arguments:** Data passed into functions.
+                    * **Return Values:** Data passed out using the `return` keyword.
+                    * Understanding function arguments and return values is essential for complex logic.
+                </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Example 1: Basic Arithmetic
+        Demonstrating how inputs (arguments) are processed and a result is sent back (return).
+        ```python
+        def calculate_sum(a, b):
+            total = a + b
+            return total 
+
+        result = calculate_sum(10, 5)
+        print(result) # Output: 15
+        ```
+        </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Example 2: Dynamic Strings
+        Using arguments to create dynamic, reusable messages.
+        ```python
+        def create_greeting(name, time_of_day):
+            return f"Good {time_of_day}, {name}!"
+
+        message = create_greeting("Alice", "morning")
+        print(message) # Output: Good morning, Alice!
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Example 3: Boolean Logic
+        Functions can return `True` or `False` for flow control.
+        ```python
+        def is_even(number):
+            if number % 2 == 0:
+                return True
+            else:
+                return False
+
+        if is_even(4):
+            print("The number is even.")
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                    ### Lambda Functions
+                    * **What:** Small, anonymous functions.
+                    * **Use Case:** Useful for short, one-time operations where a full function definition is unnecessary.
+                    ```python
+                    add = lambda x, y: x + y
+                    ```
+                </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Lambda Example: Custom Sorting
+        Use a lambda to tell `sort()` which element to use for comparison.
+        ```python
+        # List of tuples (name, age)
+        people = [("Alice", 30), ("Bob", 25), ("Charlie", 35)]
+        
+        # Sort by age (index 1 of the tuple)
+        people.sort(key=lambda x: x[1])
+        
+        print(people) 
+        # Output: [('Bob', 25), ('Alice', 30), ('Charlie', 35)]
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Lambda Example: Data Transformation
+        Use `map()` to apply a lambda function to every item in a list.
+        ```python
+        numbers = [1, 2, 3, 4]
+        
+        # Multiply every number by 10
+        squared = list(map(lambda x: x * 10, numbers))
+        
+        print(squared) 
+        # Output: [10, 20, 30, 40]
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Lambda Example: Conditional Logic
+        You can include if-else logic inside a lambda using a ternary operator.
+        ```python
+        # Check if a number is positive or negative
+        check = lambda x: "Positive" if x > 0 else "Negative or Zero"
+        
+        print(check(5))  # Output: Positive
+        print(check(-2)) # Output: Negative or Zero
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                    ### Scope and Lifetime
+                    * **Scope:** Defines where a variable is visible in the code.
+                    * **Lifetime:** Defines how long a variable persists in memory.
+                </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Scope and Lifetime of Variables
+        Scope determines which parts of your code can see or use a variable.
+        * **Local Scope**: Variables defined inside a function are local to that function.
+        * **Global Scope**: Variables defined outside any function are accessible throughout the entire script.
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Example: Local Scope
+        The variable `x` only exists within the function's block.
+        ```python
+        def my_function():
+            x = 10  # Local variable
+            print(x)
+
+        my_function()
+        # print(x) # This would raise a NameError!
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Example: Global Scope
+        Global variables are defined at the top level and accessible everywhere.
+        ```python
+        y = 20 # Global variable
+
+        def show_y():
+            print(y) # Accessing global variable
+
+        show_y() # Prints 20
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+        ### Variable Lifetime
+        The lifetime of a variable is the duration it stays in memory.
+        * **Local variables** are created when the function starts and destroyed when it ends.
+        * **Global variables** exist for as long as the program is running.
+        
+        ```python
+        def create_temp():
+            temp = "I disappear after this function ends"
+            print(temp)
+
+        create_temp()
+        # The memory used by 'temp' is reclaimed after the call.
+        ```
+    </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                    ### Modules and Packages
+                    * **Modules:** Files containing reusable code.
+                    * **Packages:** Directories organizing multiple modules.
+                    * **Standard Library:** Python's built-in modules provide pre-written functionality for many tasks.
+                    * **Importing:** Using `import` statements to utilize external modules.
+                </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                    ### Hands-on Exercises
+                    * Define and call a simple function to print a message.
+                    * Create a module and import it into a main script.
+                    * Experiment with the Standard Library modules (e.g., `math` or `random`).
+        </textarea
+          >
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+    <script>
+      Reveal.initialize({
+        plugins: [RevealMarkdown],
+      });
+    </script>
+  </body>
+</html>
