@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>LU04: Object-Oriented Programming (OOP)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>LU04: OOP</h1>
+        <h3>Classes, Objects & Advanced Concepts</h3>
+        <p>Python Programming (CS2001)</p>
+      </section>
+
+      <section>
+        <h3>What is OOP?</h3>
+        <p>A programming paradigm based on the concept of "objects," which can contain data (attributes) and code
+          (methods).</p>
+        <ul>
+          <li><b>Class:</b> The blueprint (e.g., a "Car" design).</li>
+          <li><b>Object:</b> The instance (e.g., your specific red Tesla).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Topic 1: Classes and Objects</h3>
+        <pre><code class="python">
+class Student:
+    def __init__(self, name, grade):
+        self.name = name  # Attribute
+        self.grade = grade
+
+    def display_info(self):  # Method
+        print(f"Student: {self.name}, Grade: {self.grade}")
+
+s1 = Student("Alice", "A")
+s1.display_info()
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Basic OOP: 3 Examples</h3>
+        <ol>
+          <li><b>Bank Account:</b> Attributes (balance, owner) and Methods (deposit, withdraw).</li>
+          <li><b>Video Game Character:</b> Attributes (health, mana) and Methods (attack, heal).</li>
+          <li><b>Smart Home Device:</b> Attributes (status, brightness) and Methods (turn_on, set_level).</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Topic 2: Inheritance</h3>
+        <p>Allowing a class to derive attributes and methods from another class.</p>
+        <pre><code class="python">
+class Animal:
+    def speak(self):
+        print("Animal makes a sound")
+
+class Dog(Animal):  # Dog inherits from Animal
+    def speak(self):
+        print("Woof!")
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Polymorphism & Encapsulation</h3>
+        <ul>
+          <li><b>Polymorphism:</b> Different classes using the same method name (e.g., <code>.move()</code> for Bird and
+            Fish).</li>
+          <li><b>Encapsulation:</b> Hiding internal data from the outside (using <code>__private</code> variables).</li>
+          <li><b>Abstraction:</b> Showing only necessary features to the user.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Advanced OOP: 3 Examples</h3>
+        <ol>
+          <li><b>Payment System (Polymorphism):</b> <code>CreditCard</code> and <code>PayPal</code> classes both have a
+            <code>process_payment()</code> method.
+          </li>
+          <li><b>Employee Hierarchy (Inheritance):</b> <code>Manager</code> and <code>Developer</code> inheriting from
+            <code>Employee</code>.
+          </li>
+          <li><b>Secure Login (Encapsulation):</b> A <code>User</code> class where the <code>__password</code> attribute
+            cannot be accessed directly.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Topic 2.2: Polymorphism in Action</h3>
+        <p><b>Polymorphism</b> allows different classes to be treated as the same "type" through a shared method
+          interface.</p>
+
+        <div style="display: flex; gap: 20px; font-size: 0.65em;">
+          <div style="flex: 1; border: 1px solid #555; padding: 10px;">
+            <p><b>Example 1: Payment Systems</b></p>
+            <pre><code class="python">
+class CreditCard:
+    def process(self, amt):
+        return f"Charging ${amt} to Card"
+
+class PayPal:
+    def process(self, amt):
+        return f"Redirecting to PayPal for ${amt}"
+
+# Both respond to .process()
+            </code></pre>
+          </div>
+          <div style="flex: 1; border: 1px solid #555; padding: 10px;">
+            <p><b>Example 2: File Exporters</b></p>
+            <p><code>PDFExporter</code> and <code>CSVExporter</code> both have a <code>.save()</code> method, but write
+              data differently.</p>
+            <hr>
+            <p><b>Example 3: UI Elements</b></p>
+            <p><code>Button</code> and <code>Checkbox</code> both have a <code>.render()</code> method to draw
+              themselves on screen.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Why use Polymorphism?</h3>
+        <ul>
+          <li><b>Flexibility:</b> You can add a <code>CryptoPayment</code> class later without changing your main
+            "Checkout" code.</li>
+          <li><b>Simplicity:</b> No need for complex <code>if-else</code> blocks to check if an object is a Card or
+            PayPal.</li>
+          <li><b>Maintenance:</b> Keeps your <b>Advanced OOP</b> structures clean and professional.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Topic 3: Magic Methods</h3>
+        <p>Special methods surrounded by double underscores (Dunder).</p>
+        <ul>
+          <li><code>__init__</code>: Initializes an object.</li>
+          <li><code>__str__</code>: Defines how an object is printed as a string.</li>
+          <li><code>__len__</code>: Defines behavior for the <code>len()</code> function.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Exercise 1: Library System</h3>
+        <p>Create a <code>Book</code> class with attributes <code>title</code> and <code>author</code>. Add a
+          <code>__str__</code> magic method so that <code>print(book_instance)</code> shows "Title by Author".
+        </p>
+      </section>
+
+      <section>
+        <h3>Exercise 2: Shape Inheritance</h3>
+        <p>Create a base class <code>Shape</code> with a method <code>area()</code>. Create subclasses
+          <code>Square</code> and <code>Circle</code> that override the <code>area()</code> method with their specific
+          formulas.
+        </p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true });
+  </script>
+</body>
+
+</html>

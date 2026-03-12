@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>LU05: Advanced Python Topics</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h2>LU05: Advanced Topics</h2>
+        <p>Regex, Decorators, and Efficient Coding</p>
+        <hr>
+        <p>Python Programming (CS2001)</p>
+      </section>
+
+      <section>
+        <h3>Topic 1: Regular Expressions (re)</h3>
+        <p>Used for searching, matching, and manipulating text patterns.</p>
+        <pre><code class="python">
+import re
+text = "Contact us at info@school.edu"
+match = re.search(r'[\w\.-]+@[\w\.-]+', text)
+print(match.group()) # info@school.edu
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Decoding RegEx Symbols</h3>
+        <p>RegEx uses <b>Metacharacters</b> to represent types of data:</p>
+        <table style="font-size: 0.6em;">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Meaning</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>\w</code></td>
+              <td>Word character (a-z, A-Z, 0-9, _)</td>
+              <td><code>\w+</code> matches "Python"</td>
+            </tr>
+            <tr>
+              <td><code>\d</code></td>
+              <td>Digit (0-9)</td>
+              <td><code>\d{3}</code> matches "555"</td>
+            </tr>
+            <tr>
+              <td><code>\.</code></td>
+              <td>A literal dot (the \ "escapes" it)</td>
+              <td><code>\.com</code> matches ".com"</td>
+            </tr>
+            <tr>
+              <td><code>+</code></td>
+              <td>One or more of the previous</td>
+              <td><code>a+</code> matches "a" or "aaa"</td>
+            </tr>
+            <tr>
+              <td><code>[]</code></td>
+              <td>A character set (match any inside)</td>
+              <td><code>[aeiou]</code> matches any vowel</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.5em; margin-top: 20px;">
+          <b>Example:</b> <code>[\w\.-]+</code> means: Match any word, dot, or hyphen, one or more times.
+        </p>
+      </section>
+
+      <section>
+        <h3>Decoding RegEx Symbols (Part 2)</h3>
+        <p>Anchors and Quantifiers for precise matching:</p>
+        <table style="font-size: 0.6em;">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Meaning</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>.</code></td>
+              <td>Dot</td>
+              <td>Matches <b>any</b> character (except newline)</td>
+              <td><code>a.b</code> matches "axb", "a2b"</td>
+            </tr>
+            <tr>
+              <td><code>\s</code></td>
+              <td>Whitespace</td>
+              <td>Matches spaces, tabs, or newlines</td>
+              <td><code>\w\s\w</code> matches "A B"</td>
+            </tr>
+            <tr>
+              <td><code>^</code></td>
+              <td>Caret</td>
+              <td>Matches the <b>start</b> of a string</td>
+              <td><code>^Hello</code></td>
+            </tr>
+            <tr>
+              <td><code>$</code></td>
+              <td>Dollar</td>
+              <td>Matches the <b>end</b> of a string</td>
+              <td><code>end$</code></td>
+            </tr>
+            <tr>
+              <td><code>*</code></td>
+              <td>Star</td>
+              <td>Matches <b>0 or more</b> repetitions</td>
+              <td><code>hi*</code> matches "h", "hi", "hiii"</td>
+            </tr>
+            <tr>
+              <td><code>?</code></td>
+              <td>Question</td>
+              <td>Matches <b>0 or 1</b> repetition (Optional)</td>
+              <td><code>colors?</code> matches "color" or "colors"</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.5em; margin-top: 20px;">
+          <b>Pro Tip:</b> Use <code>^</code> and <code>$</code> together to ensure an entire string matches a pattern
+          exactly (e.g., <code>^\d{6}$</code> for a 6-digit postal code).
+        </p>
+      </section>
+
+      <section>
+        <h3>Regex Applications (3 Examples)</h3>
+        <ol>
+          <li><b>Email Validation:</b> Checking if a user input follows user@domain.com format.</li>
+          <li><b>Data Extraction:</b> Pulling all phone numbers from a large text file.</li>
+          <li><b>Search & Replace:</b> Changing all dates from MM/DD/YYYY to YYYY-MM-DD.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Core Collections: List, Set, & Dictionary</h3>
+        <p>Before automating with <b>Comprehensions</b>, we must know our containers:</p>
+        <div style="display: flex; gap: 10px; font-size: 0.55em;">
+          <div style="flex: 1; border: 1px solid #777; padding: 10px;">
+            <p><b>List <code>[]</code></b></p>
+            <ul>
+              <li>Ordered & Indexed</li>
+              <li>Allows Duplicates</li>
+              <li>Ex: <code>[1, 2, 2, 3]</code></li>
+            </ul>
+          </div>
+          <div style="flex: 1; border: 1px solid #777; padding: 10px;">
+            <p><b>Dictionary <code>{k:v}</code></b></p>
+            <ul>
+              <li>Key-Value Pairs</li>
+              <li>Unique Keys</li>
+              <li>Ex: <code>{"id": 101}</code></li>
+            </ul>
+          </div>
+          <div style="flex: 1; border: 1px solid #777; padding: 10px;">
+            <p><b>Set <code>{}</code></b></p>
+            <ul>
+              <li>Unordered</li>
+              <li>Unique Elements Only</li>
+              <li>Ex: <code>{1, 2, 3}</code></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Topic 2: Comprehensions</h3>
+        <p>A concise way to create lists, dictionaries, or sets.</p>
+        <pre><code class="python">
+# List Comprehension
+squares = [x**2 for x in range(5)] # [0, 1, 4, 9, 16]
+
+# Dictionary Comprehension
+prices = {'apple': 1.0, 'banana': 0.5}
+taxes = {k: v * 1.1 for k, v in prices.items()}
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Comprehensions (3 Examples)</h3>
+        <ol>
+          <li><b>Filtering:</b> Creating a list of only even numbers from 1 to 100.</li>
+          <li><b>Transformation:</b> Converting a list of strings to uppercase.</li>
+          <li><b>Set Creation:</b> Extracting unique first letters from a list of names.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Comprehension Code Gallery</h3>
+        <div style="font-size: 0.6em;">
+
+          <p><b>1. Filtering (Even numbers 1-20)</b></p>
+          <pre><code class="python">
+# Traditional way: 4 lines. Comprehension: 1 line.
+evens = [n for n in range(1, 21) if n % 2 == 0]
+print(evens) # [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+        </code></pre>
+
+          <p><b>2. Transformation (Uppercase Names)</b></p>
+          <pre><code class="python">
+names = ["alice", "bob", "charlie"]
+shouting = [name.upper() for name in names]
+print(shouting) # ['ALICE', 'BOB', 'CHARLIE']
+        </code></pre>
+
+          <p><b>3. Set Creation (Unique Initials)</b></p>
+          <pre><code class="python">
+students = ["Alice", "Andrew", "Bob", "Beatrice", "Charlie"]
+initials = {name[0] for name in students}
+print(initials) # {'A', 'B', 'C'} - Note: Duplicates are removed!
+        </code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Topic 3: Decorators</h3>
+        <p>Functions that "wrap" other functions to modify their behavior without changing their source code.</p>
+        <pre><code class="python">
+def my_decorator(func):
+    def wrapper():
+        print("Something before.")
+        func()
+        print("Something after.")
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Decorators (3 Examples)</h3>
+        <ol>
+          <li><b>Logging:</b> Recording when a function starts and ends.</li>
+          <li><b>Authorization:</b> Checking if a user is logged in before running a function.</li>
+          <li><b>Timing:</b> Measuring how many seconds a function takes to execute.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Exercise 1: Regex Master</h3>
+        <p>Write a Python script using the <code>re</code> module to find all dates in the format <b>DD-MM-YYYY</b>
+          within a provided string.</p>
+      </section>
+
+      <section>
+        <h3>Exercise 2: Decorator Timer</h3>
+        <p>Create a decorator <code>@time_it</code> that prints the execution time of any function it wraps.</p>
+      </section>
+
+      <section>
+        <h3>Topic 3: Working with Dates and Time</h3>
+        <p>The <code>datetime</code> module is part of the Python <b>Standard Library</b>.</p>
+        <ul>
+          <li><b>date:</b> For Year, Month, Day.</li>
+          <li><b>time:</b> For Hours, Minutes, Seconds.</li>
+          <li><b>datetime:</b> A combination of both.</li>
+          <li><b>timedelta:</b> Used for date arithmetic (adding/subtracting time).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Parsing and Formatting</h3>
+        <p>Converting strings to objects (Parsing) and objects to strings (Formatting).</p>
+        <div style="font-size: 0.7em;">
+          <pre><code class="python">
+from datetime import datetime
+
+# Formatting (strftime: String From Time)
+now = datetime.now()
+print(now.strftime("%Y-%m-%d %H:%M")) # 2026-03-11 19:22
+
+# Parsing (strptime: String Parse Time)
+date_str = "12-25-2025"
+dt_obj = datetime.strptime(date_str, "%m-%d-%Y")
+        </code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Datetime (3 Examples)</h3>
+        <ol>
+          <li><b>Age Calculator:</b> Subtracting a birth date from today's date using <code>timedelta</code>.</li>
+          <li><b>Log Timestamps:</b> Adding a timestamp to error messages in LU03-style exception handling.</li>
+          <li><b>Deadline Tracker:</b> Calculating how many days remain until the <b>Final Exam</b>[cite: 13].</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Datetime in Practice</h3>
+        <div style="font-size: 0.55em;">
+
+          <p><b>1. Age Calculator (Date Arithmetic)</b></p>
+          <pre><code class="python">
+from datetime import date
+birth_date = date(2000, 5, 20)
+today = date.today()
+age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+print(f"User is {age} years old.") 
+        </code></pre>
+
+          <p><b>2. Log Timestamps (LU03 Integration)</b></p>
+          <pre><code class="python">
+from datetime import datetime
+try:
+    raise ValueError("Invalid Data")
+except ValueError as e:
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] ERROR: {e}")
+# Output example: [2026-03-11 19:30:05] ERROR: Invalid Data
+        </code></pre>
+
+          <p><b>3. Deadline Tracker (Timedelta)</b></p>
+          <pre><code class="python">
+from datetime import datetime, timedelta
+exam_date = datetime(2026, 6, 15)
+remaining = exam_date - datetime.now()
+print(f"Only {remaining.days} days left until the Final Exam!")
+        </code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Deep Dive: One-Line Age Logic</h3>
+        <p style="font-size: 0.7em;">
+          <code>age = today.year - birth.year - ((today.month, today.day) < (birth.month, birth.day))</code></p>
+
+        <div style="display: flex; gap: 20px; font-size: 0.55em; text-align: left;">
+          <div style="flex: 1; border-right: 1px solid #555; padding-right: 15px;">
+            <p><b>Step 1: Year Difference</b></p>
+            <p><code>today.year - birth.year</code> calculates the maximum age possible this year.</p>
+
+            <p><b>Step 2: Tuple Comparison</b></p>
+            <p>Python compares tuples item-by-item: <code>(month, day)</code>.</p>
+            <ul>
+              <li>If the current date is <b>before</b> the birthday, the expression is <code>True</code>.</li>
+              <li>If the birthday has <b>passed</b>, it is <code>False</code>.</li>
+            </ul>
+          </div>
+
+          <div style="flex: 1;">
+            <p><b>Step 3: Boolean Arithmetic</b></p>
+            <p>In Python, <code>True == 1</code> and <code>False == 0</code>.</p>
+            <ul>
+              <li>If <code>True (1)</code>: Subtract 1 from the age (birthday hasn't happened yet).</li>
+              <li>If <code>False (0)</code>: Subtract 0 (age remains the same).</li>
+            </ul>
+            <hr>
+            <p><b>Example (Today: March 11):</b></p>
+            <p>Born May 20: <code>(3, 11) < (5, 20)</code> is <code>True (1)</code>.<br>
+              Result: 26 - 1 = <b>25 years old</b>.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+  <script>Reveal.initialize({ hash: true });</script>
+</body>
+
+</html>

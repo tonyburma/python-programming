@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>LU03: Errors and Exception Handling</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h2>LU03: Errors & Exception Handling</h2>
+        <p>Python Programming (CS2001)</p>
+        <hr>
+        <p>Moving from "It crashed" to "I handled it."</p>
+      </section>
+
+      <section>
+        <h3>What are Exceptions?</h3>
+        <p>An exception is an error that happens <b>during</b> execution. If not handled, the program terminates.</p>
+        <ul>
+          <li><b>Syntax Error:</b> "Grammar" mistakes (e.g., missing colon).</li>
+          <li><b>Exception:</b> Logical errors (e.g., dividing by zero).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>The try-except Block</h3>
+        <p>Used to catch and handle exceptions so the script keeps running.</p>
+        <pre><code class="python">
+try:
+    # Code that might fail
+    result = 10 / 0
+except ZeroDivisionError:
+    # Code that runs if error occurs
+    print("You can't divide by zero!")
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Topic 1: Handling Exceptions (3 Examples)</h3>
+        <ol>
+          <li><b>ZeroDivisionError:</b> Catching division by zero.</li>
+          <li><b>ValueError:</b> Handling invalid user input (e.g., entering "abc" for an int).</li>
+          <li><b>FileNotFoundError:</b> (Ref. LU02) Handling missing files.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Else and Finally</h3>
+        <ul>
+          <li><b>else:</b> Runs if NO exceptions were raised.</li>
+          <li><b>finally:</b> ALWAYS runs, regardless of an error (perfect for closing files).</li>
+        </ul>
+        <pre><code class="python">
+try:
+    f = open("test.txt", "r")
+except FileNotFoundError:
+    print("File missing")
+else:
+    print("Read successful")
+finally:
+    print("Cleaning up resources...")
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Using Assertions</h3>
+        <p>Assertions are sanity checks for your code. They test if a condition is True; if not, they raise an
+          <code>AssertionError</code>.
+        </p>
+        <pre><code class="python">
+def calculate_age(year):
+    assert year > 0, "Year must be positive!"
+    return 2024 - year
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Why Custom Exceptions?</h3>
+        <p>Standard exceptions like <code>ValueError</code> are too generic for specific business rules.</p>
+        <ul>
+          <li><b>Clarity:</b> <code>InsufficientFundsError</code> is clearer than a generic
+            <code>RuntimeError</code>.
+          </li>
+          <li><b>Precision:</b> You can catch <i>your</i> specific error without affecting others.</li>
+          <li><b>Data:</b> Custom exceptions can carry extra attributes (like a current balance or user ID).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>The Anatomy of a Custom Error</h3>
+        <p>All custom exceptions <b>must</b> inherit from the built-in <code>Exception</code> class.</p>
+        <pre><code class="python">
+class ValueTooHighError(Exception):
+    """Raised when the input value is too high"""
+    def __init__(self, value, limit):
+        self.value = value
+        self.limit = limit
+        self.message = f"{value} exceeds limit of {limit}"
+        super().__init__(self.message)
+    </code></pre>
+      </section>
+
+      <section>
+        <h3>Topic 2: Custom Exceptions (3 Examples)</h3>
+        <div style="font-size: 0.7em;">
+          <p><b>1. Business Logic:</b> <code>MinAgeError</code> for a voting app.</p>
+          <p><b>2. Security:</b> <code>InvalidTokenError</code> for an API authentication module.</p>
+          <p><b>3. Data Integrity:</b> <code>NegativeStockError</code> for an inventory system.</p>
+        </div>
+      </section>
+
+      <section>
+        <h3>Example: The Inventory Guard</h3>
+        <pre><code class="python">
+def update_stock(count):
+    if count < 0:
+        raise NegativeStockError(count)
+    print(f"Stock updated to {count}")
+
+try:
+    update_stock(-5)
+except NegativeStockError as e:
+    print(f"Inventory Error: Cannot set stock to {e.value}")
+    </code></pre>
+      </section>
+
+      <section>
+        <h3>Creating Custom Exceptions</h3>
+        <p>Sometimes built-in errors aren't specific enough. We can create our own by inheriting from the
+          <code>Exception</code> class.
+        </p>
+        <pre><code class="python">
+class SalaryNotInRangeError(Exception):
+    """Exception raised for errors in the input salary."""
+    def __init__(self, salary, message="Salary not in (5k, 30k)"):
+        self.salary = salary
+        self.message = message
+        super().__init__(self.message)
+                </code></pre>
+      </section>
+
+      <section>
+        <h3>Exercise 1: The Safe Calculator</h3>
+        <p>Write a function that asks for two numbers and divides them. Use <code>try-except</code> to handle:</p>
+        <ul>
+          <li>Non-numeric input (ValueError).</li>
+          <li>Division by zero (ZeroDivisionError).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Exercise 2: Custom Validator</h3>
+        <p>Create a <b>Custom Exception</b> called <code>InvalidPasswordError</code>. Raise it if a user's password is
+          less than 8 characters long.</p>
+      </section>
+
+      <section>
+        <h3>LU03 Summary</h3>
+        <ul>
+          <li>Exceptions prevent program crashes.</li>
+          <li>Use <code>try/except/else/finally</code> for robust control flow.</li>
+          <li><code>Assertions</code> help during debugging.</li>
+          <li>Next up: LU04 Object-Oriented Programming! </li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t'
+    });
+  </script>
+</body>
+
+</html>
