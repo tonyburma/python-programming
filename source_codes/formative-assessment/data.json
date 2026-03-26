@@ -1,0 +1,24 @@
+{
+  "vehicles": [
+    {
+      "type": "Truck",
+      "license_plate": "TNK-1234",
+      "fuel_level": 100,
+      "capacity": 5000,
+      "trailer_type": "Flatbed"
+    },
+    {
+      "type": "Motorcycle",
+      "license_plate": "YGN-5678",
+      "fuel_level": 10,
+      "capacity": 50
+    },
+    {
+      "type": "Van",
+      "license_plate": "VAN-9012",
+      "fuel_level": 80,
+      "capacity": 2000,
+      "is_refrigerated": true
+    }
+  ]
+}

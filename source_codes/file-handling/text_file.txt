@@ -1,0 +1,8 @@
+ID, Name, Role
+101, Alice, Developer
+102, Bob, Designer
+103, Charlie, Manager
+
+Notes:
+- Always remember to close your files (or use 'with').
+- Python is great for automation!
