@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Flask Full-Stack Development</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/monokai.min.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>Flask Web Development</h1>
+        <p>From "Hello World" to Full-Stack Applications</p>
+        <p><small>Based on Lecture Topics</small></p>
+      </section>
+
+      <section>
+        <section>
+          <h2>1. Introduction to Flask</h2>
+          <p>Transitioning from static logic to dynamic servers.</p>
+        </section>
+        <section>
+          <h3>What is Flask?</h3>
+          <ul>
+            <li>A <strong>micro-framework</strong> written in Python.</li>
+            <li>Lightweight and modular.</li>
+            <li>Provides tools, libraries, and technologies to build a web app.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>2. Routing & Hello World</h2>
+          <pre><code class="python" data-trim>
+                        from flask import Flask
+                        app = Flask(__name__)
+
+                        @app.route("/")
+                        def index():
+                            return "Hello, world!"
+                    </code></pre>
+        </section>
+        <section>
+          <h3>Decorators</h3>
+          <p>The <code>@app.route("/")</code> decorator tells Flask which URL should trigger our function.</p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>3. Rendering HTML & Jinja</h2>
+          <p>Separating logic (Python) from presentation (HTML).</p>
+        </section>
+        <section>
+          <h3>Jinja Syntax</h3>
+          <ul>
+            <li><code>render_template("index.html")</code> looks in the <code>/templates</code> folder.</li>
+            <li>Placeholders: <code>{{ name }}</code></li>
+            <li>Control Flow: <code>{% if ... %}</code> and <code>{% for ... %}</code></li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>4. Handling User Input</h2>
+        </section>
+        <section>
+          <h3>GET vs. POST</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Data Location</th>
+                <th>Best For</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>GET</strong></td>
+                <td>URL (?name=x)</td>
+                <td>Searching/Fetching</td>
+              </tr>
+              <tr>
+                <td><strong>POST</strong></td>
+                <td>HTTP Body</td>
+                <td>Sensitive Data/Changes</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section>
+        <h3>5. Template Abstraction</h3>
+        <p>Use <code>layout.html</code> to define a "blueprint" for your site.</p>
+        <pre><code class="html" data-trim>
+                    &lt;body&gt;
+                        {% block body %}{% endblock %}
+                    &lt;/body&gt;
+                </code></pre>
+        <p>Then <code>{% extends "layout.html" %}</code> in other files.</p>
+      </section>
+
+      <section>
+        <h3>6. Server-Side Validation</h3>
+        <p><strong>Never trust the user.</strong></p>
+        <ul>
+          <li>Users can bypass HTML restrictions using Inspect Element.</li>
+          <li>Always re-validate input in <code>app.py</code>.</li>
+        </ul>
+      </section>
+
+      <section>
+        <section>
+          <h2>7. Data Persistence</h2>
+        </section>
+        <section>
+          <h3>Dictionaries vs. SQL</h3>
+          <ul>
+            <li><strong>RAM:</strong> Fast but volatile (data lost on restart).</li>
+            <li><strong>SQL:</strong> Permanent storage using <code>db.execute</code>.</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Deregistration</h3>
+          <p>Using <code>&lt;input type="hidden"&gt;</code> to pass IDs for deletion without showing them to users.</p>
+        </section>
+      </section>
+
+      <section>
+        <h2>8. MVC Architecture</h2>
+        <ul>
+          <li><strong>Model:</strong> Your Data (SQL)</li>
+          <li><strong>View:</strong> Your UI (HTML/Jinja)</li>
+          <li><strong>Controller:</strong> Your Logic (Python/Flask)</li>
+        </ul>
+      </section>
+
+      <section>
+        <section>
+          <h2>9. Cookies & Sessions</h2>
+          <p>HTTP is <strong>stateless</strong> (it forgets you immediately).</p>
+        </section>
+        <section>
+          <h3>The Solution</h3>
+          <ul>
+            <li><strong>Cookies:</strong> Small files stored on the client.</li>
+            <li><strong>Sessions:</strong> Server-side memory tied to a cookie ID.</li>
+            <li>Used for: Logins and Shopping Carts.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <h2>10. APIs & JSON</h2>
+        <p>Returning data, not just pages.</p>
+        <pre><code class="python" data-trim>
+                    from flask import jsonify
+
+                    @app.route("/search")
+                    def search():
+                        return jsonify(results)
+                </code></pre>
+        <p>Enables dynamic search bars and inter-app communication.</p>
+      </section>
+
+      <section>
+        <h2>Happy Coding!</h2>
+        <p>Go build something dynamic.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+
+</html>

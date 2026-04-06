@@ -3,15 +3,24 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-  <title>Flask Web Development Lesson</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+  <title>Modern Python Package Management with uv</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/serif.min.css">
+  <style>
+    .reveal table {
+      font-size: 0.6em;
+    }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    .reveal code {
+      color: #ff79c6;
+    }
+
+    .highlight {
+      color: #50fa7b;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -19,150 +28,136 @@
     <div class="slides">
 
       <section>
-        <h1>Introduction to Flask</h1>
-        <h3>Modern Web Apps & APIs with Python</h3>
-
+        <h2>Modern Python Package Management</h2>
+        <h3>Transitioning to <span class="highlight">uv</span></h3>
+        <p><small>Based on uv Documentation</small></p>
       </section>
 
       <section>
-        <h2>1. How Modern Apps Work</h2>
-        <p>Separation of <strong>Frontend</strong> and <strong>Backend</strong>.</p>
+        <section>
+          <h2>Why Virtual Environments?</h2>
+          <p>Global installations (pip install) lead to three major issues:</p>
+          <ul>
+            <li><strong>Dependency Conflicts:</strong> Different projects needing different versions of the same
+              package.</li>
+            <li><strong>System Pollution:</strong> Messy, hard-to-debug global installations.</li>
+            <li><strong>"Works on My Machine":</strong> Lack of isolation makes code non-portable.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>The Solution</h2>
+          <p>A <strong>virtual environment (venv)</strong> acts as an isolated "container" for each project.
+          </p>
+        </section>
+      </section>
+
+      <section>
+        <h2>What is <span class="highlight">uv</span>?</h2>
+        <p>An extremely fast Python package manager and resolver written in <strong>Rust</strong> by Astral
+          Software.</p>
         <ul>
-          <li><strong>Client:</strong> The UI (React, Swift, Android).</li>
-          <li><strong>Server:</strong> The Logic (Flask, Node, Go).</li>
-          <li><strong>API:</strong> The messenger using HTTP.</li>
-        </ul>
-        <p><em>Example: Your phone asks for data (Request), the server sends JSON (Response).</em></p>
-      </section>
-
-      <section>
-        <h2>2. What is Flask?</h2>
-        <ul>
-          <li>A <strong>Micro-framework</strong> for Python.</li>
-          <li>Extremely lightweight and easy to scale.</li>
-          <li>No "enforced" way to do things (Flexibility).</li>
-          <li>Built-in development server and debugger.</li>
+          <li>Replaces <code>pip</code>, <code>venv</code>, <code>pip-tools</code>, and <code>pyenv</code>.</li>
+          <li><strong>10-100x faster</strong> than pip.</li>
+          <li>Unified workflow into one tool.</li>
         </ul>
       </section>
 
       <section>
-        <h2>3. Installing Flask</h2>
-        <pre><code class="language-bash" data-trim data-line-numbers>
-# Create folder
-mkdir my_flask_app && cd my_flask_app
-
-# Set up Virtual Environment
-python -m venv venv
-source venv/bin/activate # Mac/Linux
-venv\Scripts\activate    # Windows
-
-# Install
-pip install flask
-					</code></pre>
+        <h2>uv vs. Traditional pip</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Traditional pip</th>
+              <th>uv</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Speed</td>
+              <td>Slower (Python)</td>
+              <td>Instant (Rust)</td>
+            </tr>
+            <tr>
+              <td>Tools Needed</td>
+              <td>pip, venv, pyenv, etc.</td>
+              <td>Just uv (All-in-one)</td>
+            </tr>
+            <tr>
+              <td>Lock Files</td>
+              <td>Manual/Incomplete</td>
+              <td>Automatic <code>uv.lock</code></td>
+            </tr>
+            <tr>
+              <td>Activation</td>
+              <td>Manual <code>source venv/bin/activate</code></td>
+              <td>Automatic via <code>uv run</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p><small>Analogy: If pip is a screwdriver, uv is a power drill.</small></p>
       </section>
 
       <section>
-        <h2>4. Structure of Flask App</h2>
-        <pre><code class="language-text" data-trim>
-my_flask_app/
-│
-├── app.py           # Logic
-├── templates/       # HTML files
-└── static/          # CSS, JS, Images
-					</code></pre>
+        <h2>Installation</h2>
+        <p><strong>macOS & Linux:</strong></p>
+        <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+        <p><strong>Windows (PowerShell):</strong></p>
+        <pre><code>powershell -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
+        <p><small>Restart your terminal after installation.</small></p>
       </section>
 
       <section>
-        <h2>5. Developing Home Page</h2>
-        <p>Inside <code>app.py</code>:</p>
-        <pre><code class="language-python" data-trim data-line-numbers>
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "<h1>Hello World!</h1>"
-
-if __name__ == "__main__":
-    app.run(debug=True)
-					</code></pre>
+        <section>
+          <h2>Step 1: Initialize Project</h2>
+          <pre><code>uv init my-project
+cd my-project</code></pre>
+          <p>Creates <code>pyproject.toml</code>, <code>.python-version</code>, and <code>hello.py</code>.</p>
+        </section>
+        <section>
+          <h2>Step 2: Add Dependencies</h2>
+          <pre><code>uv add requests
+uv add --dev pytest ruff</code></pre>
+          <p>Updates <code>pyproject.toml</code> and <code>uv.lock</code> automatically.</p>
+        </section>
+        <section>
+          <h2>Step 3: Run Your Code</h2>
+          <pre><code>uv run python hello.py
+uv run pytest</code></pre>
+          <p><strong>Note:</strong> You never need to manually activate the venv!</p>
+        </section>
       </section>
 
       <section>
-        <h2>6. Adding Other Routes</h2>
-        <pre><code class="language-python" data-trim data-line-numbers>
-@app.route("/about")
-def about():
-    return "This is the about page."
+        <h2>Reproducing Environments</h2>
+        <p>When sharing a project, others can run:</p>
+        <pre><code>uv sync</code></pre>
+        <p>This reads <code>uv.lock</code> to create an <strong>identical</strong> environment.</p>
+        <p>For one-off scripts:</p>
+        <pre><code>uv run --with requests python script.py</code></pre>
 
-@app.route("/user/<name>")
-def profile(name):
-    return f"Welcome, {name}!"
-					</code></pre>
       </section>
 
       <section>
-        <h2>7. HTML Templates</h2>
-        <p>Using <code>render_template</code> to serve HTML files.</p>
-        <pre><code class="language-python" data-trim>
-from flask import render_template
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-					</code></pre>
-        <p><small>Flask looks for these in the <code>/templates</code> folder.</small></p>
-      </section>
-
-      <section>
-        <h2>8. API Routes</h2>
-        <p>Return a Dictionary to automatically serve JSON.</p>
-        <pre><code class="language-python" data-trim data-line-numbers>
-@app.route("/api/info")
-def api_info():
-    return {
-        "framework": "Flask",
-        "language": "Python",
-        "version": 3.0
-    }
-					</code></pre>
-      </section>
-
-      <section>
-        <h2>9. Testing with Postman</h2>
+        <h2>Summary</h2>
         <ol>
-          <li>Run your app: <code>python app.py</code></li>
-          <li>Open <strong>Postman</strong>.</li>
-          <li>Set method to <strong>GET</strong>.</li>
-          <li>URL: <code>http://127.0.0.1:5000/api/info</code></li>
-          <li>Check the JSON output!</li>
+          <li>Use environments to avoid <strong>dependency hell</strong>.</li>
+          <li><code>uv</code> is <strong>faster and simpler</strong> than pip + venv.</li>
+          <li><code>pyproject.toml</code> is the <strong>modern standard</strong>.</li>
+          <li><code>uv.lock</code> ensures <strong>reproducibility</strong> across teams.</li>
+          <li><code>uv run</code> eliminates manual activation.</li>
         </ol>
-      </section>
-
-      <section>
-        <h2>10. Exercises</h2>
-        <ul>
-          <li><strong>Task 1:</strong> Create a <code>/contact</code> route.</li>
-          <li><strong>Task 2:</strong> Pass a variable from Python to an HTML template.</li>
-          <li><strong>Task 3:</strong> Build an API that returns a list of your 3 favorite books.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Questions?</h2>
-        <p>Time to start coding!</p>
       </section>
 
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
   <script>
     Reveal.initialize({
       hash: true,
-      plugins: [RevealHighlight]
+      slideNumber: 'c/t',
+      transition: 'slide'
     });
   </script>
 </body>

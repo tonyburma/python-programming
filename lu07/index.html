@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Flask Web Development Lesson</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/serif.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>Introduction to Flask</h1>
+        <h3>Modern Web Apps & APIs with Python</h3>
+
+      </section>
+
+      <section>
+        <h2>1. How Modern Apps Work</h2>
+        <p>Separation of <strong>Frontend</strong> and <strong>Backend</strong>.</p>
+        <ul>
+          <li><strong>Client:</strong> The UI (React, Swift, Android).</li>
+          <li><strong>Server:</strong> The Logic (Flask, Node, Go).</li>
+          <li><strong>API:</strong> The messenger using HTTP.</li>
+        </ul>
+        <p><em>Example: Your phone asks for data (Request), the server sends JSON (Response).</em></p>
+      </section>
+
+      <section>
+        <h2>2. What is Flask?</h2>
+        <ul>
+          <li>A <strong>Micro-framework</strong> for Python.</li>
+          <li>Extremely lightweight and easy to scale.</li>
+          <li>No "enforced" way to do things (Flexibility).</li>
+          <li>Built-in development server and debugger.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Installing Flask</h2>
+        <pre><code class="language-bash" data-trim data-line-numbers>
+# Create folder
+mkdir my_flask_app && cd my_flask_app
+
+# Set up Virtual Environment
+python -m venv venv
+source venv/bin/activate # Mac/Linux
+venv\Scripts\activate    # Windows
+
+# Install
+pip install flask
+					</code></pre>
+      </section>
+
+      <section>
+        <h2>4. Structure of Flask App</h2>
+        <pre><code class="language-text" data-trim>
+my_flask_app/
+│
+├── app.py           # Logic
+├── templates/       # HTML files
+└── static/          # CSS, JS, Images
+					</code></pre>
+      </section>
+
+      <section>
+        <h2>5. Developing Home Page</h2>
+        <p>Inside <code>app.py</code>:</p>
+        <pre><code class="language-python" data-trim data-line-numbers>
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "<h1>Hello World!</h1>"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+					</code></pre>
+      </section>
+
+      <section>
+        <h2>6. Adding Other Routes</h2>
+        <pre><code class="language-python" data-trim data-line-numbers>
+@app.route("/about")
+def about():
+    return "This is the about page."
+
+@app.route("/user/<name>")
+def profile(name):
+    return f"Welcome, {name}!"
+					</code></pre>
+      </section>
+
+      <section>
+        <h2>7. HTML Templates</h2>
+        <p>Using <code>render_template</code> to serve HTML files.</p>
+        <pre><code class="language-python" data-trim>
+from flask import render_template
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+					</code></pre>
+        <p><small>Flask looks for these in the <code>/templates</code> folder.</small></p>
+      </section>
+
+      <section>
+        <section>
+          <h2>7. HTML Templates (The Python Side)</h2>
+          <p>Use <code>render_template</code> and pass data as keyword arguments.</p>
+          <pre><code class="language-python" data-trim data-line-numbers>
+from flask import render_template
+
+@app.route("/greet/<name>")
+def greet(name):
+    # Pass 'name' variable to the template
+    return render_template("index.html", user=name, day="Monday")
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>7. HTML Templates (The Jinja2 Side)</h2>
+          <p>File: <code>templates/index.html</code></p>
+          <pre><code class="language-html" data-trim data-line-numbers>
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Hello, {{ user }}!</h1>
+    <p>Today is {{ day }}.</p>
+    
+    {% if user == 'Admin' %}
+        <p>Welcome to the dashboard.</p>
+    {% endif %}
+</body>
+</html>
+        </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <h2>8. API Routes</h2>
+        <p>Return a Dictionary to automatically serve JSON.</p>
+        <pre><code class="language-python" data-trim data-line-numbers>
+@app.route("/api/info")
+def api_info():
+    return {
+        "framework": "Flask",
+        "language": "Python",
+        "version": 3.0
+    }
+					</code></pre>
+      </section>
+
+      <section>
+        <h2>9. Testing with Postman</h2>
+        <ol>
+          <li>Run your app: <code>python app.py</code></li>
+          <li>Open <strong>Postman</strong>.</li>
+          <li>Set method to <strong>GET</strong>.</li>
+          <li>URL: <code>http://127.0.0.1:5000/api/info</code></li>
+          <li>Check the JSON output!</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>10. Exercises</h2>
+        <ul>
+          <li><strong>Task 1:</strong> Create a <code>/contact</code> route.</li>
+          <li><strong>Task 2:</strong> Pass a variable from Python to an HTML template.</li>
+          <li><strong>Task 3:</strong> Build an API that returns a list of your 3 favorite books.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Questions?</h2>
+        <p>Time to start coding!</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+
+</html>
