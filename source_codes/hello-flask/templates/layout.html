@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flask Demo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #a0aac7;
+    }
+
+    #navigation {
+      margin-bottom: 20px;
+    }
+
+    #navigation a {
+      text-decoration: none;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    #navigation a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navigation">
+    <a href="/">Home</a> |
+    <a href="/about">About</a> |
+    <a href="/greet/John">Greet John</a>
+  </div>
+  {% block content %}
+  {% endblock %}
+
+  <footer>
+    <p>&copy; 2024 Flask Demo App</p>
+  </footer>
+</body>
+
+</html>

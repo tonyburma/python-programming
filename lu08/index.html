@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLAlchemy with Flask & SQLite3</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>SQLAlchemy with Flask</h1>
+        <h3>Database Management with SQLite3</h3>
+        <p><small>Object-Relational Mapping (ORM) Essentials</small></p>
+      </section>
+
+      <section>
+        <h2>What is SQLAlchemy?</h2>
+        <ul>
+          <li>An <strong>Object-Relational Mapper (ORM)</strong> for Python.</li>
+          <li><strong>The Problem:</strong> Raw SQL strings are messy and error-prone.</li>
+          <li><strong>The Solution:</strong> Interact with database tables as Python classes (objects).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Why Use It?</h2>
+        <table style="font-size: 0.7em;">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Benefit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Abstraction</strong></td>
+              <td>Write Python, not SQL; swap backends easily.</td>
+            </tr>
+            <tr>
+              <td><strong>Security</strong></td>
+              <td>Automatic protection against SQL injection.</td>
+            </tr>
+            <tr>
+              <td><strong>Maintainability</strong></td>
+              <td>Schema defined in version-control friendly code.</td>
+            </tr>
+            <tr>
+              <td><strong>Productivity</strong></td>
+              <td>Less boilerplate; focus on logic.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <section>
+          <h2>Getting Started</h2>
+          <pre><code class="bash" data-trim>
+pip install flask flask-sqlalchemy
+                        </code></pre>
+          <p><small>Note: SQLite3 is built into Python; no separate driver needed.</small></p>
+        </section>
+        <section>
+          <h2>Basic Configuration</h2>
+          <pre><code class="python" data-trim>
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+                        </code></pre>
+          <p><small><code>shop.db</code> will be created in your project root.</small></p>
+        </section>
+      </section>
+
+      <section>
+        <h2>Defining Models</h2>
+        <pre><code class="python" data-trim style="font-size: 0.45em; line-height: 1.2em;">
+class Product(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    # Foreign Key
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+                    </code></pre>
+        <ul style="font-size: 0.6em;">
+          <li><strong>db.Column:</strong> Defines a table column.</li>
+          <li><strong>primary_key:</strong> Unique identifier.</li>
+          <li><strong>nullable=False:</strong> Required field.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>CRUD Operations</h2>
+        <div style="display: flex; gap: 20px;">
+          <div style="flex: 1; font-size: 0.6em;">
+            <h3>Create</h3>
+            <pre><code class="python">
+prod = Product(name="Laptop", price=999)
+db.session.add(prod)
+db.session.commit()
+                            </code></pre>
+            <h3>Update</h3>
+            <pre><code class="python">
+prod.price = 899.99
+db.session.commit()
+                            </code></pre>
+          </div>
+          <div style="flex: 1; font-size: 0.6em;">
+            <h3>Read</h3>
+            <pre><code class="python">
+all = Product.query.all()
+one = Product.query.get(1)
+                            </code></pre>
+            <h3>Delete</h3>
+            <pre><code class="python">
+db.session.delete(prod)
+db.session.commit()
+                            </code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Database Migrations</h2>
+        <p><code>db.create_all()</code> won't update existing tables. Use <strong>Flask-Migrate</strong>
+          instead.</p>
+        <ol style="font-size: 0.8em;">
+          <li><code>flask db init</code>: Setup repository.</li>
+          <li><code>flask db migrate -m "message"</code>: Generate script.</li>
+          <li><code>flask db upgrade</code>: Apply changes.</li>
+        </ol>
+      </section>
+
+      <section>
+        <section>
+          <h2>One-to-Many</h2>
+          <pre><code class="python" data-trim>
+# In Category Model
+products = db.relationship('Product', backref='category', lazy=True)
+                        </code></pre>
+          <p><small>Allows <code>category.products</code> and <code>product.category</code> access.</small>
+          </p>
+        </section>
+        <section>
+          <h2>Many-to-Many</h2>
+          <p>Requires an <strong>Association Table</strong>.</p>
+          <pre><code class="python" data-trim style="font-size: 0.5em;">
+product_tags = db.Table('product_tags',
+    db.Column('product_id', db.Integer, db.ForeignKey('products.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+)
+                        </code></pre>
+          <p><small>Use <code>secondary=product_tags</code> in your relationship.</small></p>
+        </section>
+      </section>
+
+      <section>
+        <h2>The N+1 Problem</h2>
+        <p>Standard relationships load data "lazily," causing multiple DB hits.</p>
+        <h3>The Fix: Eager Loading</h3>
+        <pre><code class="python" data-trim>
+from sqlalchemy.orm import joinedload
+
+products = Product.query.options(joinedload(Product.category)).all()
+                    </code></pre>
+        <p><small>Fetches everything in <strong>one</strong> SQL query.</small></p>
+      </section>
+
+      <section>
+        <h2>Student Challenge</h2>
+        <ol style="font-size: 0.8em;">
+          <li>Create a migration to add a <code>description</code> column.</li>
+          <li>Query Products with tag "Featured" under $50.</li>
+          <li>Create a route returning JSON of Category counts using <code>func.count</code>.</li>
+        </ol>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+
+</html>
